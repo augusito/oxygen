@@ -4,7 +4,11 @@
   "description": "Node.js playground repository",
   "license": "MIT",
   "scripts": {
+    "start": "nodemon src/main",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
   },
   "repository": {
     "type": "git",
