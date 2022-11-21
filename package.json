@@ -1,0 +1,17 @@
+{
+  "name": "oxygen",
+  "version": "1.0.0",
+  "description": "Node.js playground repository",
+  "license": "MIT",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/augusito/oxygen.git"
+  },
+  "bugs": {
+    "url": "https://github.com/augusito/oxygen/issues"
+  },
+  "homepage": "https://github.com/augusito/oxygen#readme"
+}
