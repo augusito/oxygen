@@ -1,5 +1,4 @@
 const Artist = require("../artist/artist");
-const artist = new Artist();
 
 class Album {
   id;
@@ -10,14 +9,17 @@ class Album {
     return {
       id: this.id,
       title: this.title,
-      artist: artist.toJSON(this.albums),
+      artist: {
+        id: this.artist?.id,
+        name: this.artist?.name,
+      },
     };
   }
 
   fromJSON(data) {
     this.id = data.id;
     this.title = data.title;
-    this.artist = data.artist && artist.fromJSON(data.artist);
+    this.artist = data.artist;
   }
 }
 

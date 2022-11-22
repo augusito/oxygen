@@ -15,13 +15,22 @@ class ArtistService {
       throw new Error(`Could not find row ${id}`);
     }
 
-    return row;
+    return this.hydrate(row, new Artist()).toJSON();
   }
 
   async getList() {
-    return await models.artist.findAll({
+    const rows = await models.artist.findAll({
       include: models.album,
     });
+
+    return rows.map((row) => {
+      return this.hydrate(row, new Artist()).toJSON();
+    });
+  }
+
+  hydrate(data, object) {
+    object.fromJSON(data);
+    return object;
   }
 }
 

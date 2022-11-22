@@ -1,6 +1,6 @@
 const { models } = require("../sequelize");
 const Album = require("./album");
-const album = new Album();
+
 class AlbumService {
   async getById(id) {
     const row = await models.album.findByPk(id, {
@@ -11,8 +11,7 @@ class AlbumService {
       throw new Error(`Could not find row ${id}`);
     }
 
-    album.fromJSON(row);
-    return album.toJSON();
+    return this.hydrate(row, new Album()).toJSON();
   }
 
   async getList() {
@@ -21,9 +20,13 @@ class AlbumService {
     });
 
     return rows.map((row) => {
-      album.fromJSON(row);
-      return album.toJSON();
+      return this.hydrate(row, new Album()).toJSON();
     });
+  }
+
+  hydrate(data, object) {
+    object.fromJSON(data);
+    return object;
   }
 }
 
