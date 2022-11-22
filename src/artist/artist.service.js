@@ -1,22 +1,28 @@
 const { models } = require("../sequelize");
+const Artist = require("./artist");
 
-async function getById(id) {
-  const row = await models.artist.findByPk(id, {
-    include: models.album,
-  });
+class ArtistService {
+  async getById(id) {
+    const row = await models.artist.findByPk(id, {
+      attributes: ["id", "name"],
+      include: {
+        model: models.album,
+        attributes: ["id", "title"],
+      },
+    });
 
-  if (!row) {
-    throw new Error(`Could not find row ${id}`);
+    if (!row) {
+      throw new Error(`Could not find row ${id}`);
+    }
+
+    return row;
   }
 
-  return row;
+  async getList() {
+    return await models.artist.findAll({
+      include: models.album,
+    });
+  }
 }
 
-async function getList() {
-  return await models.artist.findAll({
-    include: models.album,
-  });
-}
-
-exports.getById = getById;
-exports.getList = getList;
+module.exports = ArtistService;
