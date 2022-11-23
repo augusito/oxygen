@@ -10,14 +10,14 @@ class AlbumListHandler {
   async handle(req, res) {
     const { id } = req.params;
     const { page = 1 } = req.query;
-    const { per_page = 5 } = req.query;
+    const { per_page: perPage = 5 } = req.query;
 
     if (id) {
       const album = await this.albumReadService.getById(id);
       return res.status(200).json(album);
     }
 
-    const albums = await this.albumReadService.getList(page, per_page);
+    const albums = await this.albumReadService.getList(page, perPage);
     return res.status(200).json(albums);
   }
 }

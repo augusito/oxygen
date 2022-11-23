@@ -20,9 +20,10 @@ class ArtistReadService {
     return hydrate(row, new ArtistEntity()).toJSON();
   }
 
-  async getList(page, per_page) {
-    const offset = (page - 1) * per_page;
-    const limit = per_page;
+  async getList(page, perPage) {
+    const offset = (page - 1) * perPage;
+    const limit = perPage;
+
     const { rows, count } = await this.findAndCountAll({
       include: models.album,
       offset,
@@ -33,7 +34,7 @@ class ArtistReadService {
       return hydrate(row, new ArtistEntity()).toJSON();
     });
 
-    return { data, page, per_page, count };
+    return { data, page, per_page: perPage, total: count };
   }
 
   async findAndCountAll(options) {
