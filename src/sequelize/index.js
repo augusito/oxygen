@@ -1,6 +1,6 @@
 const { Sequelize } = require("sequelize");
-const AlbumModel = require("../album/album.model");
-const ArtistModel = require("../artist/artist.model");
+const AlbumModel = require("../album/model/album.model");
+const ArtistModel = require("../artist/model/artist.model");
 
 const models = [AlbumModel, ArtistModel];
 const sequelize = new Sequelize({

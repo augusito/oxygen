@@ -1,5 +1,6 @@
+const { hydrate } = require("../common/hydrator");
 const { models } = require("../sequelize");
-const Artist = require("./artist");
+const ArtistEntity = require("./entity/artist.entity");
 
 class ArtistService {
   async getById(id) {
@@ -15,7 +16,7 @@ class ArtistService {
       throw new Error(`Could not find row ${id}`);
     }
 
-    return this.hydrate(row, new Artist()).toJSON();
+    return hydrate(row, new ArtistEntity()).toJSON();
   }
 
   async getList() {
@@ -24,13 +25,8 @@ class ArtistService {
     });
 
     return rows.map((row) => {
-      return this.hydrate(row, new Artist()).toJSON();
+      return hydrate(row, new ArtistEntity()).toJSON();
     });
-  }
-
-  hydrate(data, object) {
-    object.fromJSON(data);
-    return object;
   }
 }
 
