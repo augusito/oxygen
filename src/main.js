@@ -1,8 +1,5 @@
 const express = require("express");
 const sequelize = require("./sequelize");
-const AlbumListHandler = require("./album/album-list.handler");
-const ArtistListHandler = require("./artist/artist-list.handler");
-const { bindHandler } = require("./common/handler");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -12,7 +9,6 @@ const port = process.env.PORT || 3000;
   const { models } = sequelize;
 
   await models.artist.bulkCreate([
-    { name: "The Military Wives" },
     { name: "Adela" },
     { name: "Bruce Springsteen" },
     { name: "Bruno Mars" },
@@ -23,25 +19,18 @@ const port = process.env.PORT || 3000;
   ]);
 
   await models.album.bulkCreate([
-    { title: "In My Dreams", artistId: 1 },
-    { title: "21", artistId: 2 },
-    { title: "Wrecking Ball (Deluxe)", artistId: 3 },
-    { title: "Unorthodox Jukebox", artistId: 4 },
-    { title: "Doo-Wops & Hooligans", artistId: 4 },
-    { title: "Making Mirrors", artistId: 5 },
-    { title: "The Next Day (Deluxe Version)", artistId: 6 },
-    { title: "Hunky Dory (Remastered)", artistId: 6 },
-    { title: "Take Me Home", artistId: 8 },
-    { title: "Up All Night", artistId: 8 },
+    { title: "21", artistId: 1 },
+    { title: "Wrecking Ball (Deluxe)", artistId: 2 },
+    { title: "Unorthodox Jukebox", artistId: 3 },
+    { title: "Doo-Wops & Hooligans", artistId: 3 },
+    { title: "Making Mirrors", artistId: 4 },
+    { title: "The Next Day (Deluxe Version)", artistId: 5 },
+    { title: "Hunky Dory (Remastered)", artistId: 5 },
+    { title: "Take Me Home", artistId: 7 },
+    { title: "Up All Night", artistId: 7 },
   ]);
 
-  app.get("/", (req, res) => {
-    res.send("Hello world!");
-  });
-
-  app.get("/albums/:id?", bindHandler(new AlbumListHandler()));
-
-  app.get("/artists/:id?", bindHandler(new ArtistListHandler()));
+  require("./routes")(app);
 
   app.listen(port, () => {
     console.log(`Application is running on: ${port}`);
