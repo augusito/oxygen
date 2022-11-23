@@ -1,7 +1,5 @@
 const express = require("express");
 const sequelize = require("./sequelize");
-const AlbumService = require("./album/album-read.service");
-const ArtistService = require("./artist/artist.service");
 const AlbumListHandler = require("./album/album-list.handler");
 const ArtistListHandler = require("./artist/artist-list.handler");
 const { bindHandler } = require("./common/handler");

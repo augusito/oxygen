@@ -1,33 +1,36 @@
 const { omit } = require("@hemjs/util/object");
 const { hydrate } = require("../common/hydrator");
 const { models } = require("../sequelize");
-const AlbumEntity = require("./entity/album.entity");
+const ArtistEntity = require("./entity/artist.entity");
 
-class AlbumReadService {
+class ArtistReadService {
   async getById(id) {
-    const row = await models.album.findByPk(id, {
-      include: models.artist,
+    const row = await models.artist.findByPk(id, {
+      attributes: ["id", "name"],
+      include: {
+        model: models.album,
+        attributes: ["id", "title"],
+      },
     });
 
     if (!row) {
       throw new Error(`Could not find row ${id}`);
     }
 
-    return hydrate(row, new AlbumEntity()).toJSON();
+    return hydrate(row, new ArtistEntity()).toJSON();
   }
 
   async getList(page, per_page) {
     const offset = (page - 1) * per_page;
     const limit = per_page;
-
-    const { count, rows } = await this.findAndCountAll({
-      include: models.artist,
-      limit,
+    const { rows, count } = await this.findAndCountAll({
+      include: models.album,
       offset,
+      limit,
     });
 
     const data = rows.map((row) => {
-      return hydrate(row, new AlbumEntity()).toJSON();
+      return hydrate(row, new ArtistEntity()).toJSON();
     });
 
     return { data, page, per_page, count };
@@ -43,8 +46,8 @@ class AlbumReadService {
     ]);
 
     const [count, rows] = await Promise.all([
-      models.album.count(countOptions),
-      models.album.findAll(options),
+      models.artist.count(countOptions),
+      models.artist.findAll(options),
     ]);
 
     return {
@@ -54,4 +57,4 @@ class AlbumReadService {
   }
 }
 
-module.exports = AlbumReadService;
+module.exports = ArtistReadService;
