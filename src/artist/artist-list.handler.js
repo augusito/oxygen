@@ -16,6 +16,7 @@ class ArtistListHandler {
       const artist = await this.artistReadService.getById(id);
       return res.status(200).json(artist);
     }
+
     const artists = await this.artistReadService.getList(page, perPage);
     return res.status(200).json(artists);
   }

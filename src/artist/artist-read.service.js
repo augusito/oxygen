@@ -1,6 +1,6 @@
 const { omit } = require("@hemjs/util/object");
 const { hydrate } = require("../common/hydrator");
-const { pageable } = require("../common/pageable");
+const Pageable = require("../common/pageable");
 const { models } = require("../sequelize");
 const ArtistEntity = require("./entity/artist.entity");
 
@@ -30,7 +30,8 @@ class ArtistReadService {
       limit,
     };
 
-    const { rows, count } = await pageable(models.artist, options);
+    const pageable = new Pageable(models.artist, options);
+    const { rows, count } = await pageable.getItems();
 
     const data = rows.map((row) => {
       return hydrate(row, new ArtistEntity()).toJSON();

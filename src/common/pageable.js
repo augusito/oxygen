@@ -1,23 +1,41 @@
 const { omit } = require("@hemjs/util/object");
 
-const pageable = async (model, options) => {
-  const countOptions = omit(options, [
-    "limit",
-    "offset",
-    "order",
-    "attributes",
-    "include",
-  ]);
+class Pageable {
+  model;
+  options;
 
-  const [count, rows] = await Promise.all([
-    model.count(countOptions),
-    model.findAll(options),
-  ]);
+  constructor(model, options) {
+    this.model = model;
+    this.options = options;
+  }
 
-  return {
-    count,
-    rows: count === 0 ? [] : rows,
-  };
-};
+  getModel() {
+    return this.model;
+  }
 
-module.exports = { pageable };
+  getOptions() {
+    return this.options;
+  }
+
+  async getItems() {
+    const countOptions = omit(this.options, [
+      "limit",
+      "offset",
+      "order",
+      "attributes",
+      "include",
+    ]);
+
+    const [count, rows] = await Promise.all([
+      this.model.count(countOptions),
+      this.model.findAll(this.options),
+    ]);
+
+    return {
+      count,
+      rows: count === 0 ? [] : rows,
+    };
+  }
+}
+
+module.exports = Pageable;
