@@ -1,3 +1,6 @@
+const { isFunction } = require("@hemjs/util");
+const { toString } = require("./utils");
+
 class Hydrator {
   static hydrate(data, object) {
     if (!isFunction(object?.fromJSON)) {
