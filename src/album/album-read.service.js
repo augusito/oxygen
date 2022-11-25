@@ -14,7 +14,7 @@ class AlbumReadService {
       throw new Error(`Could not find row ${id}`);
     }
 
-    return Hydrator.hydrate(row, new AlbumEntity()).toJSON();
+    return Hydrator.extract(Hydrator.hydrate(row, new AlbumEntity()));
   }
 
   async getList(page, perPage) {
@@ -30,7 +30,7 @@ class AlbumReadService {
     const { count, rows } = await pageable.getItems();
 
     const data = rows.map((row) => {
-      return Hydrator.hydrate(row, new AlbumEntity()).toJSON();
+      return Hydrator.extract(Hydrator.hydrate(row, new AlbumEntity()));
     });
 
     return { data, page, per_page: perPage, total: count };
