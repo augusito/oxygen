@@ -1,4 +1,4 @@
-const { bindHandler } = require("../common/handler");
+const { bindHandler } = require("../common/utils");
 const ArtistListHandler = require("./artist-list.handler");
 
 class ArtistModule {

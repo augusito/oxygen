@@ -1,8 +1,8 @@
 const { omit } = require("@hemjs/util/object");
-const { hydrate } = require("../common/hydrator");
-const Pageable = require("../common/pageable");
 const { models } = require("../sequelize");
 const ArtistEntity = require("./entity/artist.entity");
+const Hydrator = require("../common/hydrator");
+const Pageable = require("../common/pageable");
 
 class ArtistReadService {
   async getById(id) {
@@ -18,7 +18,7 @@ class ArtistReadService {
       throw new Error(`Could not find row ${id}`);
     }
 
-    return hydrate(row, new ArtistEntity()).toJSON();
+    return Hydrator.hydrate(row, new ArtistEntity()).toJSON();
   }
 
   async getList(page, perPage) {
@@ -34,7 +34,7 @@ class ArtistReadService {
     const { rows, count } = await pageable.getItems();
 
     const data = rows.map((row) => {
-      return hydrate(row, new ArtistEntity()).toJSON();
+      return Hydrator.hydrate(row, new ArtistEntity()).toJSON();
     });
 
     return { data, page, per_page: perPage, total: count };

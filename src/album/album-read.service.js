@@ -1,8 +1,8 @@
 const { omit } = require("@hemjs/util/object");
-const { hydrate } = require("../common/hydrator");
-const Pageable = require("../common/pageable");
 const { models } = require("../sequelize");
 const AlbumEntity = require("./entity/album.entity");
+const Hydrator = require("../common/hydrator");
+const Pageable = require("../common/pageable");
 
 class AlbumReadService {
   async getById(id) {
@@ -14,7 +14,7 @@ class AlbumReadService {
       throw new Error(`Could not find row ${id}`);
     }
 
-    return hydrate(row, new AlbumEntity()).toJSON();
+    return Hydrator.hydrate(row, new AlbumEntity()).toJSON();
   }
 
   async getList(page, perPage) {
@@ -30,7 +30,7 @@ class AlbumReadService {
     const { count, rows } = await pageable.getItems();
 
     const data = rows.map((row) => {
-      return hydrate(row, new AlbumEntity()).toJSON();
+      return Hydrator.hydrate(row, new AlbumEntity()).toJSON();
     });
 
     return { data, page, per_page: perPage, total: count };
