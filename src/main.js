@@ -1,8 +1,8 @@
-const express = require("express");
 const sequelize = require("./sequelize");
+const Application = require("./app/application");
+const HttpAdapter = require("./app/http-adapter");
 
-const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 (async () => {
   await sequelize.sync({ force: true });
@@ -30,9 +30,10 @@ const port = process.env.PORT || 3000;
     { title: "Up All Night", artistId: 7 },
   ]);
 
-  require("./routes")(app);
+  const app = new Application(new HttpAdapter());
+  app.listen(port);
+  require("./routes")(app.getHttpAdapter());
+  app.enableShutdownHooks(["SIGTERM", "SIGINT"]);
 
-  app.listen(port, () => {
-    console.log(`Application is running on: ${port}`);
-  });
+  console.log(`Application is running on: ${port}`);
 })();
