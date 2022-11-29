@@ -31,9 +31,9 @@ const port = process.env.PORT || 3001;
   ]);
 
   const app = new Application(new HttpAdapter());
-  app.listen(port);
+  await app.listen(port);
   require("./routes")(app.getHttpAdapter());
   app.enableShutdownHooks(["SIGTERM", "SIGINT"]);
 
-  console.log(`Application is running on: ${port}`);
+  console.log(`Application is running on: ${await app.getUrl()}`);
 })();

@@ -1,5 +1,6 @@
-const { isFunction } = require("@hemjs/util");
+const { isFunction, isString } = require("@hemjs/util");
 const { iterate } = require("iterare");
+const { platform } = require("os");
 const { isEmpty } = require("../common/utils");
 const { MESSAGES, ShutdownSignal } = require("./constants");
 
@@ -33,12 +34,17 @@ class Application {
     this.unsubscribeFromProcessSignals();
   }
 
-  getHttpAdapter() {
-    return this.httpAdapter;
+  async dispose() {
+    this.httpAdapter && (await this.httpAdapter.close());
   }
 
-  getHttpServer() {
-    return this.httpServer;
+  use(...args) {
+    this.httpAdapter.use(...args);
+    return this;
+  }
+
+  getHttpAdapter() {
+    return this.httpAdapter;
   }
 
   registerHttpServer() {
@@ -50,27 +56,8 @@ class Application {
     return this.httpAdapter.getHttpServer();
   }
 
-  enableShutdownHooks(signals) {
-    if (!isEmpty(signals)) {
-      signals = Object.keys(ShutdownSignal).map((key) => ShutdownSignal[key]);
-    } else {
-      // given signals array should be unique because
-      // process shouldn't listen to the same signal more than once.
-      signals = Array.from(new Set(signals));
-    }
-
-    signals = iterate(signals)
-      .map((signal) => signal.toString().toUpperCase().trim())
-      // filter out the signals which is already listening to
-      .filter((signal) => !this.activeShutdownSignals.includes(signal))
-      .toArray();
-
-    this.listenToShutdownSignals(signals);
-    return this;
-  }
-
-  async dispose() {
-    this.httpAdapter && (await this.httpAdapter.close());
+  getHttpServer() {
+    return this.httpServer;
   }
 
   async listen(port, ...args) {
@@ -113,6 +100,37 @@ class Application {
     });
   }
 
+  async getUrl() {
+    return new Promise((resolve, reject) => {
+      if (!this.isListening) {
+        console.error(MESSAGES.CALL_LISTEN_FIRST);
+        reject(MESSAGES.CALL_LISTEN_FIRST);
+        return;
+      }
+      const address = this.httpServer.address();
+      resolve(this.formatAddress(address));
+    });
+  }
+
+  enableShutdownHooks(signals) {
+    if (!isEmpty(signals)) {
+      signals = Object.keys(ShutdownSignal).map((key) => ShutdownSignal[key]);
+    } else {
+      // given signals array should be unique because
+      // process shouldn't listen to the same signal more than once.
+      signals = Array.from(new Set(signals));
+    }
+
+    signals = iterate(signals)
+      .map((signal) => signal.toString().toUpperCase().trim())
+      // filter out the signals which is already listening to
+      .filter((signal) => !this.activeShutdownSignals.includes(signal))
+      .toArray();
+
+    this.listenToShutdownSignals(signals);
+    return this;
+  }
+
   listenToShutdownSignals(signals) {
     const cleanup = async (signal) => {
       try {
@@ -140,6 +158,41 @@ class Application {
     this.activeShutdownSignals.forEach((signal) => {
       process.removeListener(signal, this.shutdownCleanupRef);
     });
+  }
+
+  formatAddress(address) {
+    if (isString(address)) {
+      if (platform() === "win32") {
+        return address;
+      }
+      const basePath = encodeURIComponent(address);
+      return `${this.getProtocol()}+unix://${basePath}`;
+    }
+
+    let host = this.host();
+    if (address && address.family === "IPv6") {
+      if (host === "::") {
+        host = "[::1]";
+      } else {
+        host = `[${host}]`;
+      }
+    } else if (host === "0.0.0.0") {
+      host = "127.0.0.1";
+    }
+
+    return `${this.getProtocol()}://${host}:${address.port}`;
+  }
+
+  host() {
+    const address = this.httpServer.address();
+    if (isString(address)) {
+      return undefined;
+    }
+    return address && address.address;
+  }
+
+  getProtocol() {
+    return this.appOptions && this.appOptions.httpsOptions ? "https" : "http";
   }
 }
 
