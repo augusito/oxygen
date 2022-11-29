@@ -1,6 +1,6 @@
 const sequelize = require("./sequelize");
-const Application = require("./app/application");
-const HttpAdapter = require("./app/http-adapter");
+const Application = require("./core/application");
+const HttpAdapter = require("./core/http-adapter");
 
 const port = process.env.PORT || 3001;
 
