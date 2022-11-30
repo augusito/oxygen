@@ -1,3 +1,6 @@
+/**
+ * Value object to represent distances in a given metric.
+ */
 class Distance {
   value;
   metric;
@@ -19,7 +22,7 @@ class Distance {
    * @return
    */
   getNormalizedValue() {
-    return value / metric.getMultiplier();
+    return this.value / this.metric.getMultiplier();
   }
 
   /**
@@ -28,7 +31,36 @@ class Distance {
    * @returns
    */
   getUnit() {
-    return metric.getAbbreviation();
+    return this.metric.getAbbreviation();
+  }
+
+  /**
+   * Adds the given distance to the current one.
+   *
+   * @param other
+   * @return
+   */
+  add(other) {
+    const newNormalizedValue =
+      this.getNormalizedValue() + other.getNormalizedValue();
+
+    return new Distance(
+      newNormalizedValue * this.metric.getMultiplier(),
+      this.metric
+    );
+  }
+
+  /**
+   * Returns a new Distance in the given Metric.
+   *
+   * @param metric.
+   * @return
+   */
+  in(metric) {
+    return new Distance(
+      this.getNormalizedValue() * metric.getMultiplier(),
+      metric
+    );
   }
 
   /**
@@ -49,3 +81,5 @@ class Distance {
     return this.metric;
   }
 }
+
+module.exports = Distance;

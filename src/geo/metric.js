@@ -22,7 +22,7 @@ class Metric {
    * @returns
    */
   getMultiplier() {
-    return multiplier;
+    return this.multiplier;
   }
 
   /**
@@ -31,6 +31,8 @@ class Metric {
    * @returns
    */
   getAbbreviation() {
-    return abbreviation;
+    return this.abbreviation;
   }
 }
+
+module.exports = Metric;

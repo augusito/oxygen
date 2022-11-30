@@ -33,3 +33,5 @@ class Point {
     return this.y;
   }
 }
+
+module.exports = Point;
