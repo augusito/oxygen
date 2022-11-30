@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "nodemon src/main",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "dependencies": {
     "@hemjs/util": "^0.1.0",
@@ -15,6 +15,7 @@
     "sqlite3": "^5.1.2"
   },
   "devDependencies": {
+    "jest": "^29.3.1",
     "nodemon": "^2.0.20"
   },
   "repository": {
