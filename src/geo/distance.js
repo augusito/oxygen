@@ -1,9 +1,11 @@
+const Metric = require("./metric");
+
 /**
  * Value object to represent distances in a given metric.
  */
 class Distance {
   value;
-  metric;
+  metric = new Metric();
 
   /**
    * Creates a new Distance with the given Metric.
