@@ -5,7 +5,7 @@ const Metric = require("./metric");
  */
 class Distance {
   value;
-  metric = new Metric();
+  metric;
 
   /**
    * Creates a new Distance with the given Metric.
@@ -15,7 +15,7 @@ class Distance {
    */
   constructor(value, metric) {
     this.value = value;
-    this.metric = metric;
+    this.metric = metric || new Metric();
   }
 
   /**

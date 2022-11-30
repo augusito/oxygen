@@ -8,6 +8,7 @@ describe("Circle", () => {
     const center = new Point(1, 1);
     const circle = new Circle(center, radius);
 
+    expect(circle).toEqual(new Circle(center, radius));
     expect(circle.getCenter()).toEqual(center);
     expect(circle.getRadius()).toEqual(radius);
   });

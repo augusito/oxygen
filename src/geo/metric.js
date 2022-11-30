@@ -4,8 +4,8 @@ const { NEUTRAL } = require("./constants");
  * Metric that can be applied to a base sacle.
  */
 class Metric {
-  multiplier = NEUTRAL.multiplier;
-  abbreviation = NEUTRAL.abbreviation;
+  multiplier;
+  abbreviation;
 
   /**
    * Creates a new Metric using the given multiplier.
@@ -14,8 +14,8 @@ class Metric {
    * @param abbreviation the abbreviation to use for this Metric
    */
   constructor(multiplier, abbreviation) {
-    this.multiplier = multiplier;
-    this.abbreviation = abbreviation;
+    this.multiplier = multiplier || NEUTRAL.multiplier;
+    this.abbreviation = abbreviation || NEUTRAL.abbreviation;
   }
 
   /**
