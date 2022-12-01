@@ -2,7 +2,7 @@ const sequelize = require("./sequelize");
 const Application = require("./core/application");
 const HttpAdapter = require("./core/http-adapter");
 const Logger = require("./logger/logger");
-const ConsoleHandler = require("./logger/console-handler");
+const ConsoleHandler = require("./log/console-handler");
 
 const port = process.env.PORT || 3001;
 
