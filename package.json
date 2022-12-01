@@ -8,6 +8,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@hemjs/color": "^0.1.0",
     "@hemjs/util": "^0.1.0",
     "express": "^4.18.2",
     "iterare": "^1.2.1",

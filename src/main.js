@@ -1,6 +1,8 @@
 const sequelize = require("./sequelize");
 const Application = require("./core/application");
 const HttpAdapter = require("./core/http-adapter");
+const Logger = require("./logger/logger");
+const ConsoleHandler = require("./logger/console-handler");
 
 const port = process.env.PORT || 3001;
 
@@ -35,5 +37,10 @@ const port = process.env.PORT || 3001;
   require("./routes")(app.getHttpAdapter());
   app.enableShutdownHooks(["SIGTERM", "SIGINT"]);
 
-  console.log(`Application is running on: ${await app.getUrl()}`);
+  const logger = new Logger(
+    Application.name,
+    "INFO",
+    new ConsoleHandler("INFO")
+  );
+  logger.info(`Application is running on: ${await app.getUrl()}`);
 })();
