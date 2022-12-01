@@ -7,6 +7,7 @@ const LogLevels = {
   CRITICAL: 50,
 };
 
-const DEFAULT_FORMATTER = "{datetime} {levelName} {loggerName} {msg}";
+const DEFAULT_FORMATTER =
+  "{datetime} {levelName} {pid} {threadName} {loggerName} {msg}";
 
 module.exports = { LogLevels, DEFAULT_FORMATTER };

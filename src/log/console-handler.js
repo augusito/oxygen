@@ -1,34 +1,9 @@
-const { blue, yellow, red, bold } = require("@hemjs/color");
+const color = require("@hemjs/color");
 const BaseHandler = require("./base-handler");
 const { LogLevels } = require("./constants");
+const { toString } = require("./utils");
 
 class ConsoleHandler extends BaseHandler {
-  format1(logRecord) {
-    let msg = super.format(logRecord);
-
-    switch (logRecord.level) {
-      case LogLevels.DEBUG:
-        msg = blue(msg);
-        break;
-      case LogLevels.INFO:
-        msg = blue(msg);
-        break;
-      case LogLevels.WARNING:
-        msg = yellow(msg);
-        break;
-      case LogLevels.ERROR:
-        msg = red(msg);
-        break;
-      case LogLevels.CRITICAL:
-        msg = bold(red(msg));
-        break;
-      default:
-        break;
-    }
-
-    return msg;
-  }
-
   format(logRecord) {
     if (this.formatter instanceof Function) {
       return this.formatter(logRecord);
@@ -43,22 +18,15 @@ class ConsoleHandler extends BaseHandler {
       }
 
       if (p1 === "levelName") {
-        switch (logRecord.level) {
-          case LogLevels.INFO:
-            value = blue(value);
-            break;
-          case LogLevels.WARNING:
-            value = yellow(value);
-            break;
-          case LogLevels.ERROR:
-            value = red(value);
-            break;
-          case LogLevels.CRITICAL:
-            value = bold(red(value));
-            break;
-          default:
-            break;
-        }
+        value = this.formattedLevelName(value, logRecord.level);
+      } else if (p1 === "datetime") {
+        value = this.formatTimestamp(value);
+      } else if (p1 === "loggerName") {
+        value = this.formatLoggerName(value, 20);
+      } else if (p1 === "pid") {
+        value = this.formatPid(value);
+      } else if (p1 === "threadName") {
+        value = this.formatThreadName(value);
       }
 
       return String(value);
@@ -67,6 +35,57 @@ class ConsoleHandler extends BaseHandler {
 
   log(msg) {
     console.log(msg);
+  }
+
+  formatTimestamp(value) {
+    return color.dim(this.getTimestamp(value));
+  }
+
+  formatThreadName(threadName) {
+    return `[${threadName.padStart(7, " ")}]`;
+  }
+
+  formatPid(pid) {
+    return `${color.magenta(toString(pid))} ---`;
+  }
+
+  formattedLevelName(message, logLevel) {
+    return this.colorize(message.padStart(7, " "), logLevel);
+  }
+
+  formatLoggerName(loggerName, maxLength) {
+    loggerName = loggerName.padEnd(maxLength, " ");
+
+    if (loggerName.length > maxLength) {
+      loggerName = loggerName.slice(1 - maxLength).padStart(maxLength, "~");
+    }
+
+    loggerName = color.cyan(loggerName);
+
+    return `${loggerName} :`;
+  }
+
+  colorize(message, logLevel) {
+    const color = this.getColorByLogLevel(logLevel);
+    return color(message);
+  }
+
+  getTimestamp(value) {
+    return new Date(value).toISOString().replace("T", " ").substring(0, 23);
+  }
+
+  getColorByLogLevel(level) {
+    switch (level) {
+      case LogLevels.CRITICAL:
+      case LogLevels.ERROR:
+        return color.red;
+      case LogLevels.WARNING:
+        return color.yellow;
+      case LogLevels.DEBUG:
+        return color.blue;
+      default:
+        return color.green;
+    }
   }
 }
 
