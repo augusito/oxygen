@@ -1,12 +1,13 @@
 const sequelize = require("./sequelize");
 const Application = require("./core/application");
 const HttpAdapter = require("./core/http-adapter");
-const Logger = require("./log/logger");
-const ConsoleHandler = require("./log/console-handler");
+const LogFactory = require("./logging/log-factory");
 
 const port = process.env.PORT || 3001;
 
 (async () => {
+  const logger = LogFactory.getLog(Application.name);
+
   await sequelize.sync({ force: true });
   const { models } = sequelize;
 
@@ -37,11 +38,6 @@ const port = process.env.PORT || 3001;
   require("./routes")(app.getHttpAdapter());
   app.enableShutdownHooks(["SIGTERM", "SIGINT"]);
 
-  const logger = new Logger(
-    Application.name,
-    "NOTSET",
-    new ConsoleHandler("NOTSET")
-  );
   logger.debug("This is a debug statement");
   logger.info(`Application is running on: ${await app.getUrl()}`);
   logger.warning("This is a warning statement");
