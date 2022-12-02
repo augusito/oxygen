@@ -45,12 +45,12 @@ class ConsoleHandler extends BaseHandler {
     return color.dim(this.getTimestamp(value));
   }
 
-  formatThreadName(threadName) {
-    return `[${threadName.padStart(7, " ")}]`;
+  formatThreadName(value) {
+    return color.dim(this.getThreadName(value));
   }
 
-  formatPid(pid) {
-    return `${color.magenta(toString(pid))} ---`;
+  formatPid(value) {
+    return `${color.magenta(toString(value))}`;
   }
 
   formattedLevelName(msg, logLevel) {
@@ -76,6 +76,10 @@ class ConsoleHandler extends BaseHandler {
 
   getTimestamp(value) {
     return new Date(value).toISOString().replace("T", " ").substring(0, 23);
+  }
+
+  getThreadName(value) {
+    return `--- [${value.padStart(7, " ")}]`;
   }
 
   getWriteStreamType(level) {

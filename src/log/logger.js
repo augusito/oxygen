@@ -33,6 +33,10 @@ class Logger {
     return this.loggerName;
   }
 
+  setLoggerName(loggerName) {
+    loggerName = loggerName;
+  }
+
   setHandler(handler) {
     this.handler = handler;
   }
