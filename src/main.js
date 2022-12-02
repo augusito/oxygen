@@ -39,8 +39,12 @@ const port = process.env.PORT || 3001;
 
   const logger = new Logger(
     Application.name,
-    "INFO",
-    new ConsoleHandler("INFO")
+    "NOTSET",
+    new ConsoleHandler("NOTSET")
   );
+  logger.debug("This is a debug statement");
   logger.info(`Application is running on: ${await app.getUrl()}`);
+  logger.warning("This is a warning statement");
+  logger.error(new Error("Error!"));
+  logger.critical(new Error("Error!"));
 })();

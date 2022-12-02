@@ -9,6 +9,14 @@ class ConsoleHandler extends BaseHandler {
       return this.formatter(logRecord);
     }
 
+    return `${this.formatMessage(logRecord)}\n`;
+  }
+
+  log(msg, level) {
+    process[this.getWriteStreamType(level)].write(msg);
+  }
+
+  formatMessage(logRecord) {
     return this.formatter.replace(/{([^\s}]+)}/g, (match, p1) => {
       let value = logRecord[p1];
 
@@ -33,10 +41,6 @@ class ConsoleHandler extends BaseHandler {
     });
   }
 
-  log(msg) {
-    console.log(msg);
-  }
-
   formatTimestamp(value) {
     return color.dim(this.getTimestamp(value));
   }
@@ -49,8 +53,8 @@ class ConsoleHandler extends BaseHandler {
     return `${color.magenta(toString(pid))} ---`;
   }
 
-  formattedLevelName(message, logLevel) {
-    return this.colorize(message.padStart(7, " "), logLevel);
+  formattedLevelName(msg, logLevel) {
+    return this.colorize(msg.padStart(7, " "), logLevel);
   }
 
   formatLoggerName(loggerName, maxLength) {
@@ -65,13 +69,23 @@ class ConsoleHandler extends BaseHandler {
     return `${loggerName} :`;
   }
 
-  colorize(message, logLevel) {
+  colorize(msg, logLevel) {
     const color = this.getColorByLogLevel(logLevel);
-    return color(message);
+    return color(msg);
   }
 
   getTimestamp(value) {
     return new Date(value).toISOString().replace("T", " ").substring(0, 23);
+  }
+
+  getWriteStreamType(level) {
+    switch (level) {
+      case LogLevels.CRITICAL:
+      case LogLevels.ERROR:
+        return "stderr";
+      default:
+        return "stdout";
+    }
   }
 
   getColorByLogLevel(level) {
