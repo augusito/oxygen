@@ -1,12 +1,11 @@
 const sequelize = require("./sequelize");
-const Application = require("./core/application");
-const HttpAdapter = require("./core/http-adapter");
+const appFactory = require("./core/app-factory");
 const LogFactory = require("./logging/log-factory");
 
 const port = process.env.PORT || 3001;
 
 (async () => {
-  const logger = LogFactory.getLog(Application.name);
+  const logger = LogFactory.getLog("Application");
 
   await sequelize.sync({ force: true });
   const { models } = sequelize;
@@ -33,15 +32,10 @@ const port = process.env.PORT || 3001;
     { title: "Up All Night", artistId: 7 },
   ]);
 
-  const app = new Application(new HttpAdapter());
+  const app = appFactory.create();
   await app.listen(port);
   require("./routes")(app.getHttpAdapter());
   app.enableShutdownHooks(["SIGTERM", "SIGINT"]);
 
-  logger.trace("This is a debug statement");
-  logger.debug("This is a debug statement");
   logger.info(`Application is running on: ${await app.getUrl()}`);
-  logger.warn("This is a warning statement");
-  logger.error(new Error("Error!"));
-  logger.fatal(new Error("Fatal Error!"));
 })();

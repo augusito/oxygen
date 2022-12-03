@@ -2,9 +2,11 @@ const { isFunction, isString } = require("@hemjs/util");
 const { iterate } = require("iterare");
 const { platform } = require("os");
 const { isEmpty } = require("../common/utils");
+const LogFactory = require("../logging/log-factory");
 const { MESSAGES, ShutdownSignal } = require("./constants");
 
 class Application {
+  logger = LogFactory.getLog(Application.name);
   httpAdapter;
   appOptions;
   isInitialized = false;
@@ -23,9 +25,10 @@ class Application {
     if (this.isInitialized) {
       return this;
     }
+    this.logger.info(MESSAGES.APPLICATION_START);
 
     this.isInitialized = true;
-    console.log(MESSAGES.APPLICATION_READY);
+    this.logger.info(MESSAGES.APPLICATION_READY);
     return this;
   }
 
@@ -65,7 +68,7 @@ class Application {
 
     return new Promise((resolve, reject) => {
       const errorHandler = (e) => {
-        console.error(e?.toString?.());
+        this.logger.error(e?.toString?.());
         reject(e);
       };
 
@@ -103,7 +106,7 @@ class Application {
   async getUrl() {
     return new Promise((resolve, reject) => {
       if (!this.isListening) {
-        console.error(MESSAGES.CALL_LISTEN_FIRST);
+        this.logger.error(MESSAGES.CALL_LISTEN_FIRST);
         reject(MESSAGES.CALL_LISTEN_FIRST);
         return;
       }
@@ -138,7 +141,7 @@ class Application {
         await this.dispose();
         process.kill(process.pid, signal);
       } catch (err) {
-        console.error(MESSAGES.ERROR_DURING_SHUTDOWN);
+        this.logger.error(err);
         process.exit(1);
       }
     };
