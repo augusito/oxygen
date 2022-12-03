@@ -38,9 +38,10 @@ const port = process.env.PORT || 3001;
   require("./routes")(app.getHttpAdapter());
   app.enableShutdownHooks(["SIGTERM", "SIGINT"]);
 
+  logger.trace("This is a debug statement");
   logger.debug("This is a debug statement");
   logger.info(`Application is running on: ${await app.getUrl()}`);
-  logger.warning("This is a warning statement");
+  logger.warn("This is a warning statement");
   logger.error(new Error("Error!"));
-  logger.critical(new Error("Error!"));
+  logger.fatal(new Error("Fatal Error!"));
 })();

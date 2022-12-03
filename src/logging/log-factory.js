@@ -3,7 +3,7 @@ const Logger = require("./logger");
 
 class LogFactory {
   static getLog(loggerName = "default") {
-    return new Logger(loggerName, "NOTSET", new ConsoleHandler("NOTSET"));
+    return new Logger(loggerName, "OFF", new ConsoleHandler("OFF"));
   }
 }
 

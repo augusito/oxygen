@@ -78,6 +78,10 @@ class Logger {
     return msg instanceof Function ? fnResult : msg;
   }
 
+  trace(msg, ...args) {
+    return this.log(LogLevels.TRACE, msg, ...args);
+  }
+
   debug(msg, ...args) {
     return this.log(LogLevels.DEBUG, msg, ...args);
   }
@@ -86,16 +90,16 @@ class Logger {
     return this.log(LogLevels.INFO, msg, ...args);
   }
 
-  warning(msg, ...args) {
-    return this.log(LogLevels.WARNING, msg, ...args);
+  warn(msg, ...args) {
+    return this.log(LogLevels.WARN, msg, ...args);
   }
 
   error(msg, ...args) {
     return this.log(LogLevels.ERROR, msg, ...args);
   }
 
-  critical(msg, ...args) {
-    return this.log(LogLevels.CRITICAL, msg, ...args);
+  fatal(msg, ...args) {
+    return this.log(LogLevels.FATAL, msg, ...args);
   }
 }
 

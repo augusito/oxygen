@@ -1,30 +1,33 @@
 const { LogLevels } = require("./constants");
 
 const byLevel = {
-  [String(LogLevels.NOTSET)]: "NOTSET",
+  [String(LogLevels.OFF)]: "OFF",
+  [String(LogLevels.TRACE)]: "TRACE",
   [String(LogLevels.DEBUG)]: "DEBUG",
   [String(LogLevels.INFO)]: "INFO",
-  [String(LogLevels.WARNING)]: "WARNING",
+  [String(LogLevels.WARN)]: "WARN",
   [String(LogLevels.ERROR)]: "ERROR",
-  [String(LogLevels.CRITICAL)]: "CRITICAL",
+  [String(LogLevels.FATAL)]: "FATAL",
 };
 
 const getLevelByName = (name) => {
   switch (name) {
-    case "NOTSET":
-      return LogLevels.NOTSET;
+    case "OFF":
+      return LogLevels.OFF;
+    case "TRACE":
+      return LogLevels.TRACE;
     case "DEBUG":
       return LogLevels.DEBUG;
     case "INFO":
       return LogLevels.INFO;
-    case "WARNING":
-      return LogLevels.WARNING;
+    case "WARN":
+      return LogLevels.WARN;
     case "ERROR":
       return LogLevels.ERROR;
-    case "CRITICAL":
-      return LogLevels.CRITICAL;
+    case "FATAL":
+      return LogLevels.FATAL;
     default:
-      return LogLevels.NOTSET;
+      throw new Error(`no log level found for "${name}"`);
   }
 };
 

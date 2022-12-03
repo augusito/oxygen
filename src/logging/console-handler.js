@@ -84,7 +84,7 @@ class ConsoleHandler extends BaseHandler {
 
   getWriteStreamType(level) {
     switch (level) {
-      case LogLevels.CRITICAL:
+      case LogLevels.FATAL:
       case LogLevels.ERROR:
         return "stderr";
       default:
@@ -94,13 +94,11 @@ class ConsoleHandler extends BaseHandler {
 
   getColorByLogLevel(level) {
     switch (level) {
-      case LogLevels.CRITICAL:
+      case LogLevels.FATAL:
       case LogLevels.ERROR:
         return color.red;
-      case LogLevels.WARNING:
+      case LogLevels.WARN:
         return color.yellow;
-      case LogLevels.DEBUG:
-        return color.blue;
       default:
         return color.green;
     }
