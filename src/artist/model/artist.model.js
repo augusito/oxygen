@@ -17,7 +17,9 @@ module.exports = (sequelize) => {
   );
 
   Artist.associate = (models) => {
-    models.artist.hasMany(models.album);
+    models.artist.hasMany(models.album, {
+      foreignKey: "artist_id",
+    });
   };
 
   return Artist;

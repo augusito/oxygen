@@ -5,6 +5,10 @@ module.exports = (sequelize) => {
 
   Album.init(
     {
+      artist_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
       title: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -17,7 +21,13 @@ module.exports = (sequelize) => {
   );
 
   Album.associate = (models) => {
-    models.album.belongsTo(models.artist);
+    models.album.belongsTo(models.artist, {
+      onDelete: "SET NULL",
+      foreignKey: {
+        name: "artist_id",
+        allowNull: true,
+      },
+    });
   };
 
   return Album;

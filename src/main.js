@@ -21,15 +21,15 @@ const port = process.env.PORT || 3001;
   ]);
 
   await models.album.bulkCreate([
-    { title: "21", artistId: 1 },
-    { title: "Wrecking Ball (Deluxe)", artistId: 2 },
-    { title: "Unorthodox Jukebox", artistId: 3 },
-    { title: "Doo-Wops & Hooligans", artistId: 3 },
-    { title: "Making Mirrors", artistId: 4 },
-    { title: "The Next Day (Deluxe Version)", artistId: 5 },
-    { title: "Hunky Dory (Remastered)", artistId: 5 },
-    { title: "Take Me Home", artistId: 7 },
-    { title: "Up All Night", artistId: 7 },
+    { title: "21", artist_id: 1 },
+    { title: "Wrecking Ball (Deluxe)", artist_id: 2 },
+    { title: "Unorthodox Jukebox", artist_id: 3 },
+    { title: "Doo-Wops & Hooligans", artist_id: 3 },
+    { title: "Making Mirrors", artist_id: 4 },
+    { title: "The Next Day (Deluxe Version)", artist_id: 5 },
+    { title: "Hunky Dory (Remastered)", artist_id: 5 },
+    { title: "Take Me Home", artist_id: 7 },
+    { title: "Up All Night", artist_id: 7 },
   ]);
 
   const app = appFactory.create();

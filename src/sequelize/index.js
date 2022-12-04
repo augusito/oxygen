@@ -8,6 +8,13 @@ const sequelize = new Sequelize({
   storage: "data/dev.sqlite",
   logQueryParameters: true,
   benchmark: true,
+  define: {
+    underscored: true,
+    timestamps: true,
+    createdAt: "created_at",
+    updatedAt: "updated_at",
+    deletedAt: "deleted_at",
+  },
 });
 
 for (const model of models) {
