@@ -9,6 +9,6 @@ const LogLevels = {
 };
 
 const DEFAULT_FORMATTER =
-  "{datetime} {levelName} {pid} {threadName} {loggerName} {msg}";
+  "{datetime} {levelName} {pid} {threadName} {loggerName} {message}";
 
 module.exports = { LogLevels, DEFAULT_FORMATTER };

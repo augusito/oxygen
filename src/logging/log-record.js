@@ -1,9 +1,9 @@
 const { getLevelName } = require("./utils");
 
 class LogRecord {
-  msg;
   pid;
   args;
+  message;
   datetime;
   level;
   levelName;
@@ -11,9 +11,9 @@ class LogRecord {
   threadName;
 
   constructor(options) {
-    this.msg = options.msg;
     this.pid = process.pid;
     this.args = [...options.args];
+    this.message = options.message;
     this.level = options.level;
     this.loggerName = options.loggerName;
     this.datetime = new Date();

@@ -45,23 +45,23 @@ class Logger {
     this.handler;
   }
 
-  log(level, msg, ...args) {
+  log(level, message, ...args) {
     if (this.level > level) {
-      return msg instanceof Function ? undefined : msg;
+      return message instanceof Function ? undefined : message;
     }
 
     let fnResult;
     let logMessage;
 
-    if (msg instanceof Function) {
-      fnResult = msg();
+    if (message instanceof Function) {
+      fnResult = message();
       logMessage = toString(fnResult);
     } else {
-      logMessage = toString(msg);
+      logMessage = toString(message);
     }
 
     const record = new LogRecord({
-      msg: logMessage,
+      message: logMessage,
       args: args,
       level: level,
       loggerName: this.loggerName,
@@ -75,31 +75,31 @@ class Logger {
       handler.handle(record);
     });
 
-    return msg instanceof Function ? fnResult : msg;
+    return message instanceof Function ? fnResult : message;
   }
 
-  trace(msg, ...args) {
-    return this.log(LogLevels.TRACE, msg, ...args);
+  trace(message, ...args) {
+    return this.log(LogLevels.TRACE, message, ...args);
   }
 
-  debug(msg, ...args) {
-    return this.log(LogLevels.DEBUG, msg, ...args);
+  debug(message, ...args) {
+    return this.log(LogLevels.DEBUG, message, ...args);
   }
 
-  info(msg, ...args) {
-    return this.log(LogLevels.INFO, msg, ...args);
+  info(message, ...args) {
+    return this.log(LogLevels.INFO, message, ...args);
   }
 
-  warn(msg, ...args) {
-    return this.log(LogLevels.WARN, msg, ...args);
+  warn(message, ...args) {
+    return this.log(LogLevels.WARN, message, ...args);
   }
 
-  error(msg, ...args) {
-    return this.log(LogLevels.ERROR, msg, ...args);
+  error(message, ...args) {
+    return this.log(LogLevels.ERROR, message, ...args);
   }
 
-  fatal(msg, ...args) {
-    return this.log(LogLevels.FATAL, msg, ...args);
+  fatal(message, ...args) {
+    return this.log(LogLevels.FATAL, message, ...args);
   }
 }
 

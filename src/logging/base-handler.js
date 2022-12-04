@@ -16,8 +16,8 @@ class BaseHandler {
   handle(logRecord) {
     if (this.level > logRecord.level) return;
 
-    const msg = this.format(logRecord);
-    return this.log(msg, this.level);
+    const message = this.format(logRecord);
+    return this.log(message, this.level);
   }
 
   format(logRecord) {
@@ -37,7 +37,7 @@ class BaseHandler {
     });
   }
 
-  log(msg, level) {}
+  log(message, level) {}
   setup() {}
   destroy() {}
 }

@@ -12,8 +12,8 @@ class ConsoleHandler extends BaseHandler {
     return `${this.formatMessage(logRecord)}\n`;
   }
 
-  log(msg, level) {
-    process[this.getWriteStreamType(level)].write(msg);
+  log(message, level) {
+    process[this.getWriteStreamType(level)].write(message);
   }
 
   formatMessage(logRecord) {
@@ -53,8 +53,8 @@ class ConsoleHandler extends BaseHandler {
     return `${color.magenta(toString(value))}`;
   }
 
-  formattedLevelName(msg, logLevel) {
-    return this.colorize(msg.padStart(7, " "), logLevel);
+  formattedLevelName(value, logLevel) {
+    return this.colorize(value.padStart(7, " "), logLevel);
   }
 
   formatLoggerName(loggerName, maxLength) {
@@ -69,9 +69,9 @@ class ConsoleHandler extends BaseHandler {
     return `${loggerName} :`;
   }
 
-  colorize(msg, logLevel) {
+  colorize(value, logLevel) {
     const color = this.getColorByLogLevel(logLevel);
-    return color(msg);
+    return color(value);
   }
 
   getTimestamp(value) {
