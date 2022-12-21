@@ -1,13 +1,25 @@
 const { Sequelize } = require("sequelize");
 const AlbumModel = require("../album/model/album.model");
 const ArtistModel = require("../artist/model/artist.model");
+const LogFactory = require("../logging/log-factory");
 
+const logger = LogFactory.getLog("Sequelize");
 const models = [AlbumModel, ArtistModel];
+
 const sequelize = new Sequelize({
   dialect: "sqlite",
   storage: "data/dev.sqlite",
-  logQueryParameters: true,
   benchmark: true,
+  logging: (sql, duration) => {
+    logger.info(`${sql} Elapsed time: ${duration}ms`);
+  },
+  logQueryParameters: true,
+  pool: {
+    max: 10,
+    min: 0,
+    acquire: 30000,
+    idle: 10000,
+  },
   define: {
     underscored: true,
     timestamps: true,

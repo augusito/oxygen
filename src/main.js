@@ -7,6 +7,12 @@ const port = process.env.PORT || 3001;
 (async () => {
   const logger = LogFactory.getLog("Application");
 
+  const app = appFactory.create();
+  await app.listen(port);
+  require("./routes")(app.getHttpAdapter());
+  app.enableShutdownHooks(["SIGTERM", "SIGINT"]);
+  logger.info(`Application is running on: ${await app.getUrl()}`);
+
   await sequelize.sync({ force: true });
   const { models } = sequelize;
 
@@ -31,11 +37,4 @@ const port = process.env.PORT || 3001;
     { title: "Take Me Home", artist_id: 7 },
     { title: "Up All Night", artist_id: 7 },
   ]);
-
-  const app = appFactory.create();
-  await app.listen(port);
-  require("./routes")(app.getHttpAdapter());
-  app.enableShutdownHooks(["SIGTERM", "SIGINT"]);
-
-  logger.info(`Application is running on: ${await app.getUrl()}`);
 })();
