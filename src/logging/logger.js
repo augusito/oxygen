@@ -1,48 +1,17 @@
+const { isPlainObject } = require("@hemjs/util");
 const { LogLevels } = require("./constants");
+const { getLevelByName, getLevelName } = require("./levels");
 const LogRecord = require("./log-record");
-const { getLevelByName, getLevelName, toString } = require("./utils");
 
 class Logger {
   level;
-  handler;
   loggerName;
+  handler;
 
-  constructor(loggerName, levelName, handler) {
+  constructor(loggerName, levelName, options) {
     this.loggerName = loggerName;
     this.level = getLevelByName(levelName);
-    this.handler = handler;
-  }
-
-  getLevel() {
-    return this.level;
-  }
-
-  setLevel(level) {
-    this.level = level;
-  }
-
-  getLevelName() {
-    return getLevelName(this.level);
-  }
-
-  setLevelName(levelName) {
-    this.level = getLevelByName(levelName);
-  }
-
-  getLoggerName() {
-    return this.loggerName;
-  }
-
-  setLoggerName(loggerName) {
-    loggerName = loggerName;
-  }
-
-  setHandler(handler) {
-    this.handler = handler;
-  }
-
-  getHandler() {
-    this.handler;
+    this.handler = options.handler || [];
   }
 
   log(level, message, ...args) {
@@ -55,16 +24,16 @@ class Logger {
 
     if (message instanceof Function) {
       fnResult = message();
-      logMessage = toString(fnResult);
+      logMessage = this.stringifyMessage(fnResult);
     } else {
-      logMessage = toString(message);
+      logMessage = this.stringifyMessage(message);
     }
 
     const record = new LogRecord({
       message: logMessage,
-      args: args,
       level: level,
       loggerName: this.loggerName,
+      args: args,
     });
 
     if (!Array.isArray(this.handler)) {
@@ -78,8 +47,20 @@ class Logger {
     return message instanceof Function ? fnResult : message;
   }
 
-  trace(message, ...args) {
-    return this.log(LogLevels.TRACE, message, ...args);
+  stringifyMessage(message) {
+    if (typeof message === "string") {
+      return message;
+    }
+
+    if (isPlainObject(message) || Array.isArray(message)) {
+      return JSON.stringify(
+        message,
+        (key, value) => (typeof value === "bigint" ? value.toString() : value),
+        2
+      );
+    }
+
+    return message;
   }
 
   debug(message, ...args) {
@@ -90,16 +71,16 @@ class Logger {
     return this.log(LogLevels.INFO, message, ...args);
   }
 
-  warn(message, ...args) {
-    return this.log(LogLevels.WARN, message, ...args);
+  WARNING(message, ...args) {
+    return this.log(LogLevels.WARNING, message, ...args);
   }
 
   error(message, ...args) {
     return this.log(LogLevels.ERROR, message, ...args);
   }
 
-  fatal(message, ...args) {
-    return this.log(LogLevels.FATAL, message, ...args);
+  critical(message, ...args) {
+    return this.log(LogLevels.CRITICAL, message, ...args);
   }
 }
 

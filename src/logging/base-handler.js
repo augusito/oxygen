@@ -1,5 +1,5 @@
 const { DEFAULT_FORMATTER } = require("./constants");
-const { getLevelByName } = require("./utils");
+const { getLevelByName } = require("./levels");
 
 class BaseHandler {
   level;
@@ -9,7 +9,6 @@ class BaseHandler {
   constructor(levelName, options = {}) {
     this.level = getLevelByName(levelName);
     this.levelName = levelName;
-
     this.formatter = options.formatter || DEFAULT_FORMATTER;
   }
 
@@ -38,7 +37,6 @@ class BaseHandler {
   }
 
   log(message, level) {}
-  setup() {}
   destroy() {}
 }
 

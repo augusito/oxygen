@@ -1,32 +1,21 @@
-const { getLevelName } = require("./utils");
+const { getLevelName } = require("./levels");
 
 class LogRecord {
-  pid;
-  args;
-  message;
-  datetime;
   level;
   levelName;
   loggerName;
-  threadName;
+  args;
+  datetime;
+  pid;
 
   constructor(options) {
-    this.pid = process.pid;
-    this.args = [...options.args];
     this.message = options.message;
     this.level = options.level;
-    this.loggerName = options.loggerName;
-    this.datetime = new Date();
     this.levelName = getLevelName(options.level);
-    this.threadName = options.threadName || "main";
-  }
-
-  getArgs() {
-    return [...this.args];
-  }
-
-  getDatetime() {
-    return new Date(this.datetime.getTime());
+    this.loggerName = options.loggerName;
+    this.args = [...options.args];
+    this.datetime = new Date();
+    this.pid = process.pid;
   }
 }
 
