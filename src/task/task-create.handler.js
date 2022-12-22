@@ -1,17 +1,20 @@
 const CreateTaskDto = require("./dto/create-task.dto");
-const TaskService = require("./task.service");
+const TaskReadService = require("./task-read.service");
+const TaskWriteService = require("./task-write.service");
 
 class TaskCreateHandler {
-  taskService;
+  taskReadService;
+  taskWriteService;
 
   constructor() {
-    this.taskService = new TaskService();
+    this.taskReadService = new TaskReadService();
+    this.taskWriteService = new TaskWriteService();
   }
 
   async handle(req, res) {
     const createTaskDto = new CreateTaskDto(req.body);
-    const id = await this.taskService.create(createTaskDto);
-    const task = await this.taskService.getById(id);
+    const id = await this.taskWriteService.create(createTaskDto);
+    const task = await this.taskReadService.getById(id);
     return res.status(200).json(task);
   }
 }

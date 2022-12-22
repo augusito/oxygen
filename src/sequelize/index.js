@@ -2,9 +2,10 @@ const { Sequelize } = require("sequelize");
 const AlbumModel = require("../album/model/album.model");
 const ArtistModel = require("../artist/model/artist.model");
 const LogFactory = require("../logging/log-factory");
+const TaskModel = require("../task/model/task.model");
 
 const logger = LogFactory.getLog("Sequelize");
-const models = [AlbumModel, ArtistModel];
+const models = [AlbumModel, ArtistModel, TaskModel];
 
 const sequelize = new Sequelize({
   dialect: "sqlite",

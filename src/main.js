@@ -1,6 +1,7 @@
 const sequelize = require("./sequelize");
 const appFactory = require("./core/app-factory");
 const LogFactory = require("./logging/log-factory");
+const { TASK_PRIORITY, TASK_STATUS } = require("./task/task.constants");
 
 const port = process.env.PORT || 3000;
 
@@ -37,5 +38,29 @@ const port = process.env.PORT || 3000;
     { title: "Hunky Dory (Remastered)", artist_id: 5 },
     { title: "Take Me Home", artist_id: 7 },
     { title: "Up All Night", artist_id: 7 },
+  ]);
+
+  await models.task.bulkCreate([
+    {
+      name: "Meet James",
+      description: "Meet James in the office",
+      due_date: new Date(),
+      priority: TASK_PRIORITY.normal,
+      status: TASK_STATUS.open,
+    },
+    {
+      name: "Check email",
+      description: "",
+      due_date: new Date(),
+      priority: TASK_PRIORITY.low,
+      status: TASK_STATUS.open,
+    },
+    {
+      name: "Open new bank account",
+      description: "Go to the bank and open new bank account",
+      due_date: new Date(),
+      priority: TASK_PRIORITY.high,
+      status: TASK_STATUS.open,
+    },
   ]);
 })();

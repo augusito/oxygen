@@ -1,21 +1,23 @@
-const TaskService = require("./task.service");
+const TaskReadService = require("./task-read.service");
 
 class TaskListHandler {
-  taskService;
+  taskReadService;
 
   constructor() {
-    this.taskService = new TaskService();
+    this.taskReadService = new TaskReadService();
   }
 
   async handle(req, res) {
     const { id } = req.params;
+    const { page = 1 } = req.query;
+    const { per_page: perPage = 5 } = req.query;
 
     if (id) {
-      const task = await this.taskService.getById(+id);
+      const task = await this.taskReadService.getById(+id);
       return res.status(200).json(task);
     }
 
-    const tasks = await this.taskService.getList();
+    const tasks = await this.taskReadService.getList(page, perPage);
     return res.status(200).json(tasks);
   }
 }
