@@ -1,5 +1,6 @@
 const AlbumModule = require("./album/album.module");
 const ArtistModule = require("./artist/artist.module");
+const TaskModule = require("./task/task.module");
 
 module.exports = (app) => {
   // Home route
@@ -10,4 +11,6 @@ module.exports = (app) => {
   AlbumModule.registerRoutes(app);
   // Artist routes
   ArtistModule.registerRoutes(app);
+  //Task routes
+  TaskModule.registerRoutes(app);
 };

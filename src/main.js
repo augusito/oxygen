@@ -2,13 +2,14 @@ const sequelize = require("./sequelize");
 const appFactory = require("./core/app-factory");
 const LogFactory = require("./logging/log-factory");
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3000;
 
 (async () => {
   const logger = LogFactory.getLog("Application");
 
   const app = appFactory.create();
   await app.listen(port);
+  require("./middleware")(app.getHttpAdapter());
   require("./routes")(app.getHttpAdapter());
   app.enableShutdownHooks(["SIGTERM", "SIGINT"]);
   logger.info(`Application is running on: ${await app.getUrl()}`);
