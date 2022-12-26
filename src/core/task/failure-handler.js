@@ -1,4 +1,4 @@
-const LogFactory = require("../../logging/log-factory");
+const LogFactory = require("../../common/logging/log-factory");
 
 /**
  * Strategy fo handling a failure that occurs whn executing a task.

@@ -2,7 +2,7 @@ const { isFunction, isString } = require("@hemjs/util");
 const { iterate } = require("iterare");
 const { platform } = require("os");
 const { isEmpty } = require("../common/utils");
-const LogFactory = require("../logging/log-factory");
+const LogFactory = require("../common/logging/log-factory");
 const { MESSAGES, ShutdownSignal } = require("./constants");
 
 class Application {
@@ -98,7 +98,7 @@ class Application {
           if (isCallbackInOriginalArgs) {
             args[args.length - 1](...originalCallbackArgs);
           }
-        }
+        },
       );
     });
   }

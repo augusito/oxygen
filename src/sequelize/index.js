@@ -1,7 +1,7 @@
 const { Sequelize } = require("sequelize");
 const AlbumModel = require("../album/model/album.model");
 const ArtistModel = require("../artist/model/artist.model");
-const LogFactory = require("../logging/log-factory");
+const LogFactory = require("../common/logging/log-factory");
 const TaskModel = require("../task/model/task.model");
 
 const logger = LogFactory.getLog("Sequelize");
