@@ -11,6 +11,7 @@
     "@hemjs/color": "^0.1.0",
     "@hemjs/util": "^0.1.0",
     "body-parser": "^1.20.1",
+    "bull": "^4.10.2",
     "express": "^4.18.2",
     "iterare": "^1.2.1",
     "sequelize": "^6.25.7",
