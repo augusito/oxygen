@@ -1,4 +1,4 @@
-const { models } = require("../sequelize");
+const { models } = require("../common/sequelize");
 const Hydrator = require("../common/hydrator");
 const TaskEntity = require("./entity/task.entity");
 const { TASK_STATUS, TASK_PRIORITY } = require("./task.constants");

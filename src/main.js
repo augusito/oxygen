@@ -1,4 +1,4 @@
-const sequelize = require("./sequelize");
+const sequelize = require("./common/sequelize");
 const appFactory = require("./core/app-factory");
 const LogFactory = require("./common/logging/log-factory");
 const { TASK_PRIORITY, TASK_STATUS } = require("./task/task.constants");

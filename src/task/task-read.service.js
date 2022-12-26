@@ -1,5 +1,4 @@
-const { omit } = require("@hemjs/util/object");
-const { models } = require("../sequelize");
+const { models } = require("../common/sequelize");
 const TaskEntity = require("./entity/task.entity");
 const Hydrator = require("../common/hydrator");
 const Pageable = require("../common/pageable");
