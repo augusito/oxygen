@@ -1,9 +1,3 @@
-const bindHandler = (...args) => {
-  return args.map((arg) => {
-    return arg.handle.bind(arg);
-  });
-};
-
 const toString = (value) => {
   if (typeof value === "string") {
     return value;
@@ -61,4 +55,16 @@ const isEmpty = (value) => {
   );
 };
 
-module.exports = { bindHandler, isEmpty, toString };
+const bindHandler = (...args) => {
+  return args.map((arg) => {
+    return arg.handle.bind(arg);
+  });
+};
+
+const bindProcessor = (...args) => {
+  return args.map((arg) => {
+    return arg.process.bind(arg);
+  });
+};
+
+module.exports = { toString, isEmpty, bindHandler, bindProcessor };
